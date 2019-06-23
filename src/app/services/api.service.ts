@@ -28,10 +28,10 @@ export class City {
    	this.options = options;
  	}
 
- 	setData(data) {
+ 	setData(dataCity) {
  		/* Le tableau contiendra toujours 2 Observables en entrée donc on limite le traitementà 2 */
  		for (var i = 0; i < 2; i++) {
- 			this.data.push(data[i]);
+ 			this.data.push(dataCity[i]);
  		}
  	}
 }
@@ -56,31 +56,28 @@ export class ApiService {
 
   	/* Ajouter le type (static ou dynamic sous forme de string, exemple plus bas) dans l'appel des options d'url quand ça sera implémenté sur la fonction associée */
 
-  	let angers = new City('angers', {});
-  	angers.setOptions(this.setCityOptions(angers.getName())); // ici par exemple
-  	this.url = "https://data.${angers.getName()}.fr/api/records/1.0/search/?dataset=${this.dataset}&${angers.getOptionsString()}";
+  	const angers = new City('angers', {});
+  	this.url = "https://data.${angers.getName()}.fr/api/records/1.0/search/?dataset=${this.dataset}${angers.getOptionsString()}";
   	this.angersData = this.getAllParkingData(angers, this.url);
 
-  	let nantes = new City('nantes', {});
-  	nantes.setOptions(this.setCityOptions(nantes.getName()));
-  	this.url = "https://data.${nantes.getName()}.fr/api/records/1.0/search/?dataset=${this.dataset}&${nantes.getOptionsString()}";
+  	const nantes = new City('nantes', {});
+  	this.url = "https://data.${nantes.getName()}.fr/api/records/1.0/search/?dataset=${this.dataset}${nantes.getOptionsString()}";
   	this.nantesData = this.getAllParkingData(nantes, this.url);
 
-  	let rennes = new City('rennes', {});
-  	rennes.setOptions(this.setCityOptions(rennes.getName()));
-  	this.url = "https://data.${rennes.getName()}.fr/api/records/1.0/search/?dataset=${this.dataset}&${rennes.getOptionsString()}";
+  	const rennes = new City('rennes', {});
+  	this.url = "https://data.${rennes.getName()}.fr/api/records/1.0/search/?dataset=${this.dataset}${rennes.getOptionsString()}";
   	this.rennesData = this.getAllParkingData(rennes, this.url);
 
   }
 
   getAllParkingData(city: City, url) {
   	let type = "static";
-  	let parkingData: any = this.getParkingData(city, url);
+  	let parkingData: any = this.getParkingData(city, url, type);
   	/* /!\ Reste à faire /!\ 
 				- Vérifier si une entité City existe déjà avec ce nom, si oui on change les options en rappellant la fonction associée en lui envoyant le bon type (ci-dessus et en dessous)
   	*/
   	type = "dynamic";
-  	let time_parkingData: any = this.getParkingTimeData(city, url);
+  	let time_parkingData: any = this.getParkingTimeData(city, url, type);
 
   	let data = [];
   	data.push(parkingData, time_parkingData);
@@ -91,16 +88,20 @@ export class ApiService {
   	return data;
   }
 
-  getParkingData(city: City, url) {
+  getParkingData(city: City, url, type) {
   	let city_name = city.getName();
   	if (city_name === "angers") {
+  		/* https://data.angers.fr/explore/dataset/pv_equip_parking/information/ */
   		this.dataset = "pv_equip_parking";
   	} else if (city_name === "nantes") {
-  		/* Ajouter le dataset correspondant à lAPI globale des parkins nantais */
-  		this.dataset = "";
+  		/* https://data.nantesmetropole.fr/explore/dataset/244400404_parkings-publics-nantes/information/?disjunctive.libcategorie&disjunctive.libtype&disjunctive.acces_pmr&disjunctive.service_velo&disjunctive.stationnement_velo&disjunctive.stationnement_velo_securise&disjunctive.moyen_paiement */
+  		this.dataset = "244400404_parkings-publics-nantes";
   	} else if (city_name === "rennes") {
+  		/* https://data.rennesmetropole.fr/explore/dataset/parkings/information/ */
   		this.dataset = "parkings";
   	}
+  	console.log(url);
+  	city.setOptions(this.setCityOptions(city_name, type));
   	console.log(url);
 
   	/* Requête http à préparer avec le client(cf constructor) et l'url récupérée dans l'objet City city  */
@@ -109,17 +110,20 @@ export class ApiService {
   	return this.http.get(url);
   }
 
-  getParkingTimeData(city: City, url) {
+  getParkingTimeData(city: City, url, type) {
   	let city_name = city.getName();
   	if (city_name === "angers") {
-  		/* https://data.angers.fr/explore/dataset/parking-angers/information/ pour le dataset */
-  		this.dataset = "";
+  		/* https://data.angers.fr/explore/dataset/parking-angers/information/ */
+  		this.dataset = "parking-angers";
   	} else if (city_name === "nantes") {
+  		/* https://data.nantesmetropole.fr/explore/dataset/244400404_parkings-publics-nantes-disponibilites/information/?disjunctive.grp_nom&disjunctive.grp_statut */
   		this.dataset = "244400404_parkings-publics-nantes-disponibilites";
   	} else if (city_name === "rennes") {
-  		/* https://data.rennesmetropole.fr/explore/dataset/export-api-parking-citedia/information/ pour le dataset */
-  		this.dataset = "";
+  		/* https://data.rennesmetropole.fr/explore/dataset/export-api-parking-citedia/information/ */
+  		this.dataset = "export-api-parking-citedia";
   	}
+  	console.log(url);
+  	city.setOptions(this.setCityOptions(city_name, type));
   	console.log(url);
 
   	/* Requête http à préparer avec le client(cf constructor) et l'url récupérée dans l'objet City city  */
@@ -127,19 +131,29 @@ export class ApiService {
   	return this.http.get(url);
   }
 
-  setCityOptions(city, type: any = undefined) {
+  setCityOptions(city, type) {
   	/* Implémenter la vérification du type d'appel pour définir les bonnes options (en gros un if else sur type en plus) */
   	let options = [];
   	/* Options définies pour Angers seulement, les autres sont à faire en fonction des appel de fonctions */
   	switch (city) {
   		case 'angers' :
-  			options.push('id_parking', 'nb_places', 'nb_velo_secur', 'nb_places_pmr');
+  			if (type == "static") {
+  				options.push('id_parking', 'nb_places', 'nb_velo_secur', 'nb_places_pmr');
+  			} else if (type == "dynamic") {
+  				options.push('nom');
+  			}
   		case 'nantes' :
-  			/* Options à ajouter */
-  			options.push();
+  			if (type == "static") {
+  				options.push('libcategorie', 'libtype', 'acces_pmr', 'service_velo', 'stationnement_velo', 'stationnement_velo_securise');
+  			} else if (type == "dynamic") {
+  				options.push('grp_nom', 'grp_statut');
+  			}
   		case 'rennes' :
-  			/* Options à ajouter */
-  			options.push();
+  			if (type == "static") {
+  				options.push('nom_commune');
+  			} else if (type == "dynamic") {
+  				break;
+  			}
   	}
 
   	return options;
