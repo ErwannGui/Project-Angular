@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 export class City {
  	private name: string;
-	private options: array;
+	private options: any;
+	public data: any;
 	 constructor(name, options) {
     this.name = name;
     this.options = options;
+    this.data = [];
  	}
 
 	getName() {
@@ -16,13 +19,20 @@ export class City {
  	getOptionsString() {
    	let options_string = "";
    	for (var i = 0; i <= this.options.length ; i++) {
-   		options_string =+ "&facet="+options[i];
+   		options_string =+ "&facet="+this.options[i];
    	}
-   	return this.options_string;
+   	return options_string;
  	}
 
  	setOptions(options) {
    	this.options = options;
+ 	}
+
+ 	setData(data) {
+ 		/* Le tableau contiendra toujours 2 Observables en entrée donc on limite le traitementà 2 */
+ 		for (var i = 0; i < 2; i++) {
+ 			this.data.push(data[i]);
+ 		}
  	}
 }
 
@@ -38,7 +48,7 @@ export class ApiService {
 	rennesData: any;
 	dataset: string;
 	url: string;
-	options: array;
+	options: any;
 
   constructor(public http: HttpClient) {
 
@@ -46,40 +56,42 @@ export class ApiService {
 
   	/* Ajouter le type (static ou dynamic sous forme de string, exemple plus bas) dans l'appel des options d'url quand ça sera implémenté sur la fonction associée */
 
-  	let angers = City('angers', {});
-  	angers.setOptions(setCityOptions('angers')); // ici par exemple
+  	let angers = new City('angers', {});
+  	angers.setOptions(this.setCityOptions(angers.getName())); // ici par exemple
   	this.url = "https://data.${angers.getName()}.fr/api/records/1.0/search/?dataset=${this.dataset}&${angers.getOptionsString()}";
-  	this.angersData = await this.getAllParkingData(angers, this.url);
+  	this.angersData = this.getAllParkingData(angers, this.url);
 
-  	let nantes = City('nantes', {});
-  	nantes.setOptions(setCityOptions('nantes'));
+  	let nantes = new City('nantes', {});
+  	nantes.setOptions(this.setCityOptions(nantes.getName()));
   	this.url = "https://data.${nantes.getName()}.fr/api/records/1.0/search/?dataset=${this.dataset}&${nantes.getOptionsString()}";
-  	this.nantesData = await this.getAllParkingData(nantes, this.url);
+  	this.nantesData = this.getAllParkingData(nantes, this.url);
 
-  	let rennes = City('rennes', {});
-  	rennes.setOptions(setCityOptions('rennes'));
+  	let rennes = new City('rennes', {});
+  	rennes.setOptions(this.setCityOptions(rennes.getName()));
   	this.url = "https://data.${rennes.getName()}.fr/api/records/1.0/search/?dataset=${this.dataset}&${rennes.getOptionsString()}";
-  	this.rennesData = await this.getAllParkingData(rennes, this.url);
+  	this.rennesData = this.getAllParkingData(rennes, this.url);
 
   }
 
-  async getAllParkingData(city: City, url) {
+  getAllParkingData(city: City, url) {
   	let type = "static";
-  	let parkingData = getParkingData(city, url);
+  	let parkingData: any = this.getParkingData(city, url);
   	/* /!\ Reste à faire /!\ 
 				- Vérifier si une entité City existe déjà avec ce nom, si oui on change les options en rappellant la fonction associée en lui envoyant le bon type (ci-dessus et en dessous)
   	*/
-  	let type = "dynamic";
-  	let time_parkingData = getParkingTimeData(city, url);
+  	type = "dynamic";
+  	let time_parkingData: any = this.getParkingTimeData(city, url);
 
-  	/* Data est un object cumulant les données de parkin simples et les donnes en temps réèl. Il faut le créer avec les données remontées ci-dessus. */
+  	let data = [];
+  	data.push(parkingData, time_parkingData);
 
-  	let data: any = "";
+		/* Data est un object cumulant les données de parkin simples et les donnés en temps réèl. Il faut le créer avec les données remontées ci-dessus. */
+  	city.setData(data);
 
   	return data;
   }
 
-  getParkingData(city, url) {
+  getParkingData(city: City, url) {
   	let city_name = city.getName();
   	if (city_name === "angers") {
   		this.dataset = "pv_equip_parking";
@@ -92,11 +104,12 @@ export class ApiService {
   	console.log(url);
 
   	/* Requête http à préparer avec le client(cf constructor) et l'url récupérée dans l'objet City city  */
+  	/* Requête fonctionelle à titre d'exemple. Réutiliser une méthode similaire pour les autres */
 
-  	return;
+  	return this.http.get(url);
   }
 
-  getParkingTimeData(city, url) {
+  getParkingTimeData(city: City, url) {
   	let city_name = city.getName();
   	if (city_name === "angers") {
   		/* https://data.angers.fr/explore/dataset/parking-angers/information/ pour le dataset */
@@ -111,7 +124,7 @@ export class ApiService {
 
   	/* Requête http à préparer avec le client(cf constructor) et l'url récupérée dans l'objet City city  */
 
-  	return;
+  	return this.http.get(url);
   }
 
   setCityOptions(city, type: any = undefined) {
@@ -120,7 +133,7 @@ export class ApiService {
   	/* Options définies pour Angers seulement, les autres sont à faire en fonction des appel de fonctions */
   	switch (city) {
   		case 'angers' :
-  			options.push('id_parking', 'nb_places');
+  			options.push('id_parking', 'nb_places', 'nb_velo_secur', 'nb_places_pmr');
   		case 'nantes' :
   			/* Options à ajouter */
   			options.push();
