@@ -2,6 +2,20 @@
 @import 'theme';
 @import 'mixins';
 
+body, html{
+  background-image: linear-gradient(to bottom right, white, white, #2196f3, #2196f3);
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
 h1{
     color: $color-primary;
 }
+
+.btn{
+  width: 15vh;
+  height: 5vh;
+}
+
+
