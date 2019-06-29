@@ -1,0 +1,31 @@
+.custom_calendar_btn{
+  border: none !important;
+}
+
+#custom_nantes_btn{
+  margin: 1vw;
+  background-color: #b9f6ca;
+}
+#custom_nantes_btn.active{
+  border: 0.15vh solid #b9f6ca;
+  border-radius: 0.5vh;
+}
+
+#custom_renne_btn{
+  background-color: #b3e5fc;
+  margin: 1vw;
+}
+#custom_renne_btn.active{
+  border: 0.15vh solid #b3e5fc;
+  border-radius: 0.5vh;
+}
+
+#custom_anger_btn{
+  background-color: #ff80ab;
+  margin: 1vw;
+}
+#custom_anger_btn.active{
+  border: 0.15vh solid #ff80ab;
+  border-radius: 0.5vh;
+
+}
