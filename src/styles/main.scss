@@ -7,9 +7,8 @@ h1{
 }
 
 html{
-  height: 100vh;
   background-color: white; /* For browsers that do not support gradients */
-  background-image: linear-gradient(white, #e3f2fd, #42a5f5); /* Standard syntax */
+  background-image: linear-gradient(white, #42a5f5); /* Standard syntax */
 }
 
 html, body{

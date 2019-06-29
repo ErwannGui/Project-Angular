@@ -12,6 +12,7 @@ $(document).ready(function(){
   });
   $('.sidenav').sidenav();
   $('#sidenav-1').sidenav({ edge: 'left' });
+  $('#custom_nantes_btn').addClass('active transparent');
 
 
   $('.nav-content a').each(function () {
