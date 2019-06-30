@@ -1,3 +1,83 @@
-<h1>{{title}}</h1>
-<app-header></app-header>
-<router-outlet></router-outlet>
+<!-- NAVBAR -->
+<header>
+  <nav class="nav-extended transparent">
+    <div class="nav-wrapper">
+      <a href="#" data-target="mobile-demo" class="sidenav-trigger black-text"><i class="material-icons">menu</i></a>
+      <ul class="nav-mobile hide-on-small-only">
+        <div class="left">
+          <li><a class="black-text" href="">Aujourd'hui</a></li>
+          <li><a class="black-text" href="">Cette semaine</a></li>
+          <li><a class="black-text" href="">30 derniers jours</a></li>
+          <li><a class="black-text" href="">Cette année</a></li>
+        </div>
+        <div class="right">
+          <li><span>Du ...</span></li>
+          <li><button type="text" class=" transparent custom_calendar_btn datepicker"><i class="material-icons black-text">date_range</i></button></li>
+          <li><span>Au ...</span></li>
+          <li><button type="text" class=" transparent custom_calendar_btn datepicker"><i class="material-icons black-text">date_range</i></button></li>
+        </div>
+      </ul>
+      <ul class="nav-mobile hide-on-med-and-up">
+        <div class="left">
+          <li><a class="black-text" href="">1D</a></li>
+          <li><a class="black-text" href="">1W</a></li>
+          <li><a class="black-text" href="">1M</a></li>
+          <li><a class="black-text" href="">1Y</a></li>
+        </div>
+        <div class="right">
+          <li><button type="text" class=" transparent custom_calendar_btn datepicker"><i class="material-icons black-text">date_range</i></button></li>
+          <li><button type="text" class=" transparent custom_calendar_btn datepicker"><i class="material-icons black-text">date_range</i></button></li>
+        </div>
+      </ul>
+    </div>
+    <div class="nav-content">
+      <a id="custom_nantes_btn" class="waves-effect waves-light btn black-text" href="#" data-city="nantes">Nantes</a>
+      <a id="custom_renne_btn" class="waves-effect waves-light btn black-text" href="#" data-city="rennes">Rennes</a>
+      <a id="custom_anger_btn" class="waves-effect waves-light btn black-text" href="#" data-city="angers">Angers</a>
+    </div>
+  </nav>
+  <ul class="sidenav" id="mobile-demo">
+    <li style="background-image: linear-gradient(white, #42a5f5);"><img src="assets/image/sf-logo-w.png" width="100%"></li>
+    <li><a class="center" href="https://github.com/dogfalo/materialize/" target="_blank">PARKING</a></li>
+    <li><a class="center" href="https://twitter.com/MaterializeCSS" target="_blank">HORODATEUR</a></li>
+    <li><a class="center" href="http://next.materializecss.com/getting-started.html" target="_blank">2 ROUES</a></li>
+    <li><a class="center" href="http://next.materializecss.com/getting-started.html" target="_blank">AIRE DE COVOITURAGE</a></li>
+  </ul>
+</header>
+
+<!-- LEFT SIDEBAR	 -->
+<ul id="sidenav-1" class="sidenav sidenav-fixed transparent">
+  <li style="background-image: linear-gradient(white, #42a5f5);"><img src="assets/image/sf-logo-w.png" width="100%"></li>
+  <li><a class="center" href="https://github.com/dogfalo/materialize/" target="_blank">PARKING</a></li>
+  <li><a class="center" href="https://twitter.com/MaterializeCSS" target="_blank">HORODATEUR</a></li>
+  <li><a class="center" href="http://next.materializecss.com/getting-started.html" target="_blank">2 ROUES</a></li>
+  <li><a class="center" href="http://next.materializecss.com/getting-started.html" target="_blank">AIRE DE COVOITURAGE</a></li>
+</ul>
+
+<main>
+  <div class="row">
+    <div class="col s12 m8">
+      <div class="card fix">
+        <div id="chart_line"></div>
+      </div>
+      <div class="card fix">
+        <div id="chart_bar"></div>
+      </div>
+    </div>
+    <div class="col s12 m4">
+      <div class="card fix col s6 m12">
+        <div id="chart_donut_1"></div>
+      </div>
+      <div class="card fix col s6 m12">
+        <div id="chart_donut_2"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+
+
+<!--<h1>{{title}}</h1>-->
+<!--<app-header></app-header>-->
+<!--<router-outlet></router-outlet>-->
+<!--<app-graph></app-graph>-->
