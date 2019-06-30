@@ -45,11 +45,17 @@ $(document).ready(function(){
       curve: 'straight'
     },
     series: [{
-      name: "Desktops",
-      data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+      name: "Nantes",
+      data: [130, 111, 95, 81, 49, 32, 39, 61, 130]
+    },{
+      name: "Rennes",
+      data: [150, 131, 84, 68, 49, 31, 45, 74, 150]
+    },{
+      name: "Angers",
+      data: [120, 98, 84, 76, 42, 25, 28, 53, 120]
     }],
     title: {
-      text: 'Product Trends by Month',
+      text: 'Places restantes pour la journée',
       align: 'left'
     },
     grid: {
@@ -59,7 +65,7 @@ $(document).ready(function(){
       },
     },
     xaxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+      categories: ['6:00', '8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
     }
   };
 
@@ -92,17 +98,17 @@ $(document).ready(function(){
       colors: ['transparent']
     },
     series: [{
-      name: 'Net Profit',
+      name: 'Emplacements voiture',
       data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
     }, {
-      name: 'Revenue',
+      name: 'Emplacements PMR',
       data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
     }, {
-      name: 'Free Cash Flow',
+      name: 'Emplacements 2 Roues',
       data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
     }],
     xaxis: {
-      categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+      categories: ['6:00', '8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
     },
     yaxis: {
       title: {
@@ -157,9 +163,9 @@ $(document).ready(function(){
         }
       }
     },
-    colors: ['#1ab7ea', '#0084ff', '#39539E', '#0077B5'],
-    series: [76,67,61,90],
-    labels: ['Vimeo', 'Messenger', 'Facebook', 'LinkedIn'],
+    colors: ['#1ab7ea', '#0084ff', '#39539E'],
+    series: [76,67,61],
+    labels: ['Nantes', 'Rennes', 'Angers'],
     legend: {
       show: true,
       floating: true,
@@ -225,9 +231,9 @@ $(document).ready(function(){
         }
       }
     },
-    colors: ['#1ab7ea', '#0084ff', '#39539E', '#0077B5'],
-    series: [76,67,61,90],
-    labels: ['Vimeo', 'Messenger', 'Facebook', 'LinkedIn'],
+    colors: ['#1ab7ea', '#0084ff', '#39539E'],
+    series: [65,82,53],
+    labels: ['Nantes', 'Rennes', 'Angers'],
     legend: {
       show: true,
       floating: true,
