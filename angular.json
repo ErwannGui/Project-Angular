@@ -29,13 +29,14 @@
                         "styles": [
                             "src/styles/main.scss",
                             "node_modules/materialize-css/dist/css/materialize.min.css",
-                            "node_modules/@mdi/font/css/materialdesignicons.min.css"
+                            "node_modules/@mdi/font/css/materialdesignicons.min.css",
+                            "src/assets/lib/apexcharts-bundle/dist/apexcharts.css"
                         ],
                         "scripts": [
                           "node_modules/jquery/dist/jquery.min.js",
                           "node_modules/materialize-css/dist/js/materialize.min.js",
+                          "src/assets/lib/apexcharts-bundle/dist/apexcharts.min.js",
                           "src/assets/script.js"
-
                         ],
                         "es5BrowserSupport": true
                     },
