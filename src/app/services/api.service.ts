@@ -50,34 +50,35 @@ export class ApiService {
 	url: string;
 	options: any;
 
+	angers: City;
+	nantes: City;
+	rennes: City;
+
   constructor(public http: HttpClient) {
 
   	this.dataset = "";
 
   	/* Ajouter le type (static ou dynamic sous forme de string, exemple plus bas) dans l'appel des options d'url quand ça sera implémenté sur la fonction associée */
 
-  	const angers = new City('angers', {});
-  	this.url = "https://data.${angers.getName()}.fr/api/records/1.0/search/?dataset=${this.dataset}${angers.getOptionsString()}";
-  	this.angersData = this.getAllParkingData(angers, this.url);
+  	this.angers = new City('angers', {});
+  	this.angersData = this.getAllParkingData(this.angers);
 
-  	const nantes = new City('nantes', {});
-  	this.url = "https://data.${nantes.getName()}.fr/api/records/1.0/search/?dataset=${this.dataset}${nantes.getOptionsString()}";
-  	this.nantesData = this.getAllParkingData(nantes, this.url);
+  	this.nantes = new City('nantes', {});
+  	this.nantesData = this.getAllParkingData(this.nantes);
 
-  	const rennes = new City('rennes', {});
-  	this.url = "https://data.${rennes.getName()}.fr/api/records/1.0/search/?dataset=${this.dataset}${rennes.getOptionsString()}";
-  	this.rennesData = this.getAllParkingData(rennes, this.url);
+  	this.rennes = new City('rennes', {});
+  	this.rennesData = this.getAllParkingData(this.rennes);
 
   }
 
-  getAllParkingData(city: City, url) {
+  getAllParkingData(city: City) {
   	let type = "static";
-  	let parkingData: any = this.getParkingData(city, url, type);
+  	let parkingData: any = this.getParkingData(city);
   	/* /!\ Reste à faire /!\ 
 				- Vérifier si une entité City existe déjà avec ce nom, si oui on change les options en rappellant la fonction associée en lui envoyant le bon type (ci-dessus et en dessous)
   	*/
   	type = "dynamic";
-  	let time_parkingData: any = this.getParkingTimeData(city, url, type);
+  	let time_parkingData: any = this.getParkingTimeData(city);
 
   	let data = [];
   	data.push(parkingData, time_parkingData);
@@ -88,7 +89,8 @@ export class ApiService {
   	return data;
   }
 
-  getParkingData(city: City, url, type) {
+  getParkingData(city: City) {
+  	let type = "static";
   	let city_name = city.getName();
   	if (city_name === "angers") {
   		/* https://data.angers.fr/explore/dataset/pv_equip_parking/information/ */
@@ -100,17 +102,20 @@ export class ApiService {
   		/* https://data.rennesmetropole.fr/explore/dataset/parkings/information/ */
   		this.dataset = "parkings";
   	}
-  	console.log(url);
+
+  	this.url = "https://data.${city.getName()}.fr/api/records/1.0/search/?dataset=${this.dataset}${city.getOptionsString()}";
+  	console.log(this.url);
   	city.setOptions(this.setCityOptions(city_name, type));
-  	console.log(url);
+  	console.log(this.url);
 
   	/* Requête http à préparer avec le client(cf constructor) et l'url récupérée dans l'objet City city  */
   	/* Requête fonctionelle à titre d'exemple. Réutiliser une méthode similaire pour les autres */
 
-  	return this.http.get(url);
+  	return this.http.get(this.url);
   }
 
-  getParkingTimeData(city: City, url, type) {
+  getParkingTimeData(city: City) {
+  	let type = "dynamic";
   	let city_name = city.getName();
   	if (city_name === "angers") {
   		/* https://data.angers.fr/explore/dataset/parking-angers/information/ */
@@ -122,13 +127,15 @@ export class ApiService {
   		/* https://data.rennesmetropole.fr/explore/dataset/export-api-parking-citedia/information/ */
   		this.dataset = "export-api-parking-citedia";
   	}
-  	console.log(url);
+
+  	this.url = "https://data.${city.getName()}.fr/api/records/1.0/search/?dataset=${this.dataset}${city.getOptionsString()}";
+  	console.log(this.url);
   	city.setOptions(this.setCityOptions(city_name, type));
-  	console.log(url);
+  	console.log(this.url);
 
   	/* Requête http à préparer avec le client(cf constructor) et l'url récupérée dans l'objet City city  */
 
-  	return this.http.get(url);
+  	return this.http.get(this.url);
   }
 
   setCityOptions(city, type) {
@@ -155,6 +162,8 @@ export class ApiService {
   				break;
   			}
   	}
+
+  	console.log(options);
 
   	return options;
   }
