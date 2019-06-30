@@ -165,7 +165,7 @@ export class ApiService {
 
   /* For data persistence */
 
-  getDayData(city: String) {
+  /*getDayData(city: String) {
   	return this.Data.city.day;
   }
 
@@ -179,5 +179,5 @@ export class ApiService {
 
   getYearData(city: String) {
   	return this.Data.city.year;
-  }	
+  }	*/
 }
