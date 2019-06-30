@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+// import Data from '../assets/data.json';
 
 export class City {
  	private name: string;
@@ -47,7 +48,6 @@ export class ApiService {
 	nantesData: any;
 	rennesData: any;
 	dataset: string;
-	url: string;
 	options: any;
 
 	angers: City;
@@ -72,12 +72,7 @@ export class ApiService {
   }
 
   getAllParkingData(city: City) {
-  	let type = "static";
   	let parkingData: any = this.getParkingData(city);
-  	/* /!\ Reste à faire /!\ 
-				- Vérifier si une entité City existe déjà avec ce nom, si oui on change les options en rappellant la fonction associée en lui envoyant le bon type (ci-dessus et en dessous)
-  	*/
-  	type = "dynamic";
   	let time_parkingData: any = this.getParkingTimeData(city);
 
   	let data = [];
@@ -103,15 +98,15 @@ export class ApiService {
   		this.dataset = "parkings";
   	}
 
-  	this.url = "https://data.${city.getName()}.fr/api/records/1.0/search/?dataset=${this.dataset}${city.getOptionsString()}";
-  	console.log(this.url);
+  	let static_url = "https://data.${city.getName()}.fr/api/records/1.0/search/?dataset=${this.dataset}${city.getOptionsString()}";
+  	console.log(static_url);
   	city.setOptions(this.setCityOptions(city_name, type));
-  	console.log(this.url);
+  	console.log(static_url);
 
   	/* Requête http à préparer avec le client(cf constructor) et l'url récupérée dans l'objet City city  */
   	/* Requête fonctionelle à titre d'exemple. Réutiliser une méthode similaire pour les autres */
 
-  	return this.http.get(this.url);
+  	return this.http.get(static_url);
   }
 
   getParkingTimeData(city: City) {
@@ -128,14 +123,14 @@ export class ApiService {
   		this.dataset = "export-api-parking-citedia";
   	}
 
-  	this.url = "https://data.${city.getName()}.fr/api/records/1.0/search/?dataset=${this.dataset}${city.getOptionsString()}";
-  	console.log(this.url);
+  	let dynamic_url = "https://data.${city.getName()}.fr/api/records/1.0/search/?dataset=${this.dataset}${city.getOptionsString()}";
+  	console.log(dynamic_url);
   	city.setOptions(this.setCityOptions(city_name, type));
-  	console.log(this.url);
+  	console.log(dynamic_url);
 
   	/* Requête http à préparer avec le client(cf constructor) et l'url récupérée dans l'objet City city  */
 
-  	return this.http.get(this.url);
+  	return this.http.get(dynamic_url);
   }
 
   setCityOptions(city, type) {
@@ -167,4 +162,22 @@ export class ApiService {
 
   	return options;
   }
+
+  /* For data persistence */
+
+  getDayData(city: String) {
+  	return this.Data.city.day;
+  }
+
+  getWeekData(city: String) {
+  	return this.Data.city.week;
+  }
+
+  getMonthData(city: String) {
+  	return this.Data.city.month;
+  }
+
+  getYearData(city: String) {
+  	return this.Data.city.year;
+  }	
 }
