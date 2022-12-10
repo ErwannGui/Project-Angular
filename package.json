@@ -24,7 +24,7 @@
     "@angular/router": "~7.2.0",
     "@mdi/font": "^3.7.95",
     "core-js": "^2.5.4",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "jquery": "^3.4.1",
     "materialize-css": "^1.0.0-rc.2",
     "ngx-materialize": "^6.1.3",
